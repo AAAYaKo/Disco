@@ -39,6 +39,7 @@ namespace Disco
 
             Move.action.canceled += _ =>
             {
+                _direction = float2.zero;
                 _needMove = false;
             };
 
@@ -64,8 +65,8 @@ namespace Disco
 
         private void FixedUpdate()
         {
-            if (_needMove && !_isJumping)
-                _rigidbody.velocity = new Vector2(_speed * _direction.x, _rigidbody.velocity.y);
+            if (_needMove && !_isJumping && !_isInAir)
+                _rigidbody.MovePosition(_transform.position + Vector3.right * (_direction.x * _speed * Time.fixedDeltaTime));
 
             if (_isJumping)
             {
@@ -74,7 +75,8 @@ namespace Disco
 
                 RaycastHit2D[] hits = new RaycastHit2D[1];
                 Physics2D.Raycast(_transform.position, -Vector2.up, _contactFilter, hits);
-                if (hits[0].distance <= _distanceToGround && _isInAir)
+                float distance = hits[0].distance;
+                if (distance <= _distanceToGround && distance != 0 && _isInAir)
                 {
                     _isJumping = false;
                     _isInAir = false;

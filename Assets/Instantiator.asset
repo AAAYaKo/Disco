@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5406c2a39839174facbe024b182e743, type: 3}
   m_Name: Instantiator
   m_EditorClassIdentifier: 
-  _bulletPrephabs: []
+  _bulletPrephab: {fileID: 4153600366795594802, guid: a7daf4c7d5610fc43a01d9f453a1ca63, type: 3}
