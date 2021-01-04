@@ -17,7 +17,7 @@ namespace Disco
 
         public float2 Direction { get => _direction; }
 
-        private float2 _direction = Vector2.right;
+        private float2 _direction = float2.zero;
         private bool _needMove = false;
         private bool _isJumping = false;
         private bool _isInAir = false;
@@ -45,10 +45,13 @@ namespace Disco
 
             Jump.action.performed += _ =>
             {
-                _isJumping = true;
-                float2 force = math.normalize(new float2(_direction.x, 1)) * _jumpForce;
-                _rigidbody.AddForce(force, ForceMode2D.Impulse);
-                _rigidbody.gravityScale = _customGravityScale;
+                if (!_isJumping)
+                {
+                    _isJumping = true;
+                    float2 force = math.normalize(new float2(_direction.x, 1)) * _jumpForce;
+                    _rigidbody.AddForce(force, ForceMode2D.Impulse);
+                    _rigidbody.gravityScale = _customGravityScale;
+                }
             };
 
             Jump.action.canceled += _ =>
@@ -81,7 +84,7 @@ namespace Disco
                     _isJumping = false;
                     _isInAir = false;
                 }
-                else if(hits[0].distance >= _distanceToGround)
+                else if (hits[0].distance >= _distanceToGround)
                     _isInAir = true;
             }
         }

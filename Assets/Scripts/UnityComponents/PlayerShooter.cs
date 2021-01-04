@@ -4,8 +4,11 @@ using UnityEngine.InputSystem;
 
 namespace Disco
 {
+    [RequireComponent(typeof(PlayerMover))]
     public class PlayerShooter : MonoBehaviour
     {
+        private const float SAFE_DISTANCE = 1.5f;
+
         [SerializeField] private BulletsInstantiator _instantiator;
         [SerializeField] private InputActionReference Shoot;
         private Transform _transform;
@@ -16,11 +19,9 @@ namespace Disco
             {
                 bool2 isntZero = _mover.Direction != float2.zero;
                 if (isntZero.x || isntZero.y)
-                    _oldDircetion = _mover.Direction;
+                    _oldDircetion = math.normalize(_mover.Direction);
                 return _oldDircetion;
             }
-
-            set => shootDirection = value;
         }
         private float2 _oldDircetion = Vector2.right;
 
@@ -33,7 +34,7 @@ namespace Disco
 
             Shoot.action.performed += _ =>
             {
-                _instantiator.InstantiateBullet(_transform.position, shootDirection);
+                _instantiator.InstantiateBullet((float3)_transform.position + new float3(shootDirection * SAFE_DISTANCE, 0), shootDirection);
             };
         }
 

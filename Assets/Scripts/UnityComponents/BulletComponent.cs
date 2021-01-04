@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace Disco
 {
-    [ExecuteInEditMode]
+    [ExecuteInEditMode, RequireComponent(typeof(Collider2D))]
     public class BulletComponent : MonoBehaviour
     {
         [SerializeField] private BulletsInstantiator _instantiator;
         [SerializeField] private Transform _transform;
         [SerializeField] private float _timeOfLife = 3;
-        [SerializeField] private float _bulletSpeed = 7;
+        [SerializeField] private float _speed = 7;
+        [SerializeField] private int _damage = 1;
 
         public float2 Direction
         {
@@ -26,7 +27,7 @@ namespace Disco
             get => _transform;
         }
 
-        [SerializeField] private Vector3 _translation;
+        private Vector3 _translation;
 
 
 #if UNITY_EDITOR
@@ -46,7 +47,13 @@ namespace Disco
             else
                 _timeOfLife -= Time.deltaTime;
 
-            _transform.position +=_translation * (Time.deltaTime * _bulletSpeed);
+            _transform.position +=_translation * (Time.deltaTime * _speed);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out IHealth health))
+                health.TryAplyDamagage(_damage);
         }
     }
 }
