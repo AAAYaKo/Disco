@@ -6,7 +6,7 @@ namespace Disco
 {
     public class EnemyShooter : MonoBehaviour
     {
-        [SerializeField] private BulletsInstantiator _instantiator;
+        [SerializeField] private ProjectilePool _pool;
         [SerializeField] private Transform _player;
         [SerializeField] private float _radiuseOfVision = 7;
         [SerializeField] private float _shootDuration = 0.2f;
@@ -20,6 +20,7 @@ namespace Disco
         {
             _radiuseOfVisionSq = _radiuseOfVision * _radiuseOfVision;
 
+            _pool = FindObjectOfType<ProjectilePool>();
             _player = FindObjectOfType<PlayerMover>().GetComponent<Transform>();
             _transform = GetComponent<Transform>();
         }
@@ -43,7 +44,7 @@ namespace Disco
             {
                 float3 direction3 = _player.position - _transform.position;
                 float2 direction2 = math.normalize(new float2(direction3.x, direction3.y));
-                _instantiator.InstantiateBullet(_transform.position, direction2);
+                _pool.InstantiateBullet((float3)_transform.position + math.normalize(direction3) * 1.5f, direction2);
                 yield return new WaitForSeconds(_shootDuration);
             }
         }

@@ -39,6 +39,7 @@ namespace Disco
 
             OnDeath += () =>
             {
+                _loader.Repository.IsDead = true;
                 Debug.Log("Are you Dead");
             };
         }

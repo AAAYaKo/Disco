@@ -7,6 +7,21 @@ namespace Disco
     public class UiRepository : ScriptableObject, INotifyPropertyChanged
     {
         private int _playerLives = 0;
+        private bool _isDead;
+
+        public bool IsDead
+        {
+            get => _isDead;
+            set
+            {
+                if(value != _isDead)
+                {
+                    _isDead = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public int PlayerHealth
         {

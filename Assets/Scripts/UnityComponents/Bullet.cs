@@ -4,13 +4,21 @@ using UnityEngine;
 namespace Disco
 {
     [ExecuteInEditMode, RequireComponent(typeof(Collider2D))]
-    public class BulletComponent : MonoBehaviour
+    public class Bullet : MonoBehaviour
     {
-        [SerializeField] private BulletsInstantiator _instantiator;
+        [SerializeField] private ProjectilePool _pool;
         [SerializeField] private Transform _transform;
         [SerializeField] private float _timeOfLife = 3;
         [SerializeField] private float _speed = 7;
         [SerializeField] private int _damage = 1;
+
+        public ProjectilePool Pool
+        {
+            set
+            {
+                _pool = value;
+            }
+        }
 
         public float2 Direction
         {
@@ -42,7 +50,7 @@ namespace Disco
             if (_timeOfLife <= 0)
             {
                 _timeOfLife = 3;
-                _instantiator.DespawnBullet(gameObject);
+                _pool.DespawnBullet(gameObject);
             }
             else
                 _timeOfLife -= Time.deltaTime;
@@ -54,6 +62,7 @@ namespace Disco
         {
             if (collision.TryGetComponent(out IHealth health))
                 health.TryAplyDamagage(_damage);
+            _pool.DespawnBullet(gameObject);
         }
     }
 }

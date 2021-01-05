@@ -9,8 +9,8 @@ namespace Disco
     {
         private const float SAFE_DISTANCE = 1.5f;
 
-        [SerializeField] private BulletsInstantiator _instantiator;
-        [SerializeField] private InputActionReference Shoot;
+        [SerializeField] private ProjectilePool _instantiator;
+        [SerializeField] private InputActionReference _shoot;
         private Transform _transform;
         private PlayerMover _mover;
         private float2 shootDirection
@@ -30,9 +30,9 @@ namespace Disco
         {
             _transform = GetComponent<Transform>();
             _mover = GetComponent<PlayerMover>();
-            _instantiator.Initialize();
 
-            Shoot.action.performed += _ =>
+            _instantiator = FindObjectOfType<ProjectilePool>();
+            _shoot.action.performed += _ =>
             {
                 _instantiator.InstantiateBullet((float3)_transform.position + new float3(shootDirection * SAFE_DISTANCE, 0), shootDirection);
             };
@@ -40,7 +40,7 @@ namespace Disco
 
         private void OnEnable()
         {
-            Shoot.action.Enable();
+            _shoot.action.Enable();
         }
     }
 }
