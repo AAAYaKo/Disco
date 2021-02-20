@@ -5,13 +5,14 @@ using UnityEngine;
 namespace Disco.ObjectPooling
 {
     [ExecuteInEditMode]
-    public abstract class BasePloolComponent : MonoBehaviour, IPoolCoomponent
+    public abstract class BasePoolComponent : MonoBehaviour, IPoolCoomponent
     {
         [SerializeField] protected Transform _transform;
 
         #region Translocate
         public virtual void Translocate(float3 position, float2 direction)
         {
+            //Verify
             bool2 isZero = (direction == float2.zero);
             if (isZero.x && isZero.y)
                 throw new ArgumentException();

@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Disco.ObjectPooling
 {
+    /// <summary>
+    /// Base Pool of IPoolComponents
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class BasePool<T> : MonoBehaviour where T : MonoBehaviour, IPoolCoomponent
     {
         [SerializeField] private GameObject _prephab;
@@ -14,6 +18,7 @@ namespace Disco.ObjectPooling
         private readonly Dictionary<GameObject, T> _components = new Dictionary<GameObject, T>();
 
         private Transform _transform;
+
 
         #region Singlethone
         private static BasePool<T> _instance;
@@ -42,12 +47,19 @@ namespace Disco.ObjectPooling
 
         protected virtual void OnDisable()
         {
+            //Destroy pooled objects
             foreach (var i in _pool)
             {
                 Destroy(i);
             }
         }
 
+        /// <summary>
+        /// Spawn by position and look direction
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public virtual T Spawn(float3 position, float2 direction)
         {
             GameObject gameObject = GetGameObject();
@@ -61,6 +73,12 @@ namespace Disco.ObjectPooling
                 throw new ArgumentException();
         }
 
+        /// <summary>
+        /// Spawn by position and rotation
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
         public virtual T Spawn(float3 position, quaternion rotation)
         {
             GameObject gameObject = GetGameObject();
@@ -74,22 +92,19 @@ namespace Disco.ObjectPooling
                 throw new ArgumentException();
         }
 
+        /// <summary>
+        /// Disable and store pool Object
+        /// </summary>
+        /// <param name="pooledGameObject"></param>
         public void Despawn(GameObject pooledGameObject)
         {
             _pool.Enqueue(pooledGameObject);
             pooledGameObject.SetActive(false);
         }
 
-        private GameObject GetGameObject()
-        {
-            if (_pool.Count == 0)
-                AddBullet();
-
-            GameObject gameObject = _pool.Dequeue();
-            gameObject.SetActive(true);
-            return gameObject;
-        }
-
+        /// <summary>
+        /// Instantiate default pool Objects
+        /// </summary>
         private void InstantiateStartPoolObjects()
         {
             for (int i = 0; i < _defaultCount; i++)
@@ -98,6 +113,9 @@ namespace Disco.ObjectPooling
             }
         }
 
+        /// <summary>
+        /// Add new Bullet to Pool
+        /// </summary>
         private void AddBullet()
         {
             GameObject gameObject = Instantiate(_prephab, _transform);
@@ -105,6 +123,20 @@ namespace Disco.ObjectPooling
             _components.Add(gameObject, component);
             _pool.Enqueue(gameObject);
             gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Get actual pooled game Object
+        /// </summary>
+        /// <returns></returns>
+        private GameObject GetGameObject()
+        {
+            if (_pool.Count == 0)
+                AddBullet();
+
+            GameObject gameObject = _pool.Dequeue();
+            gameObject.SetActive(true);
+            return gameObject;
         }
     }
 }

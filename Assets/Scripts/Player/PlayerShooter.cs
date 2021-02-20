@@ -18,26 +18,35 @@ namespace Disco.Player
         private void Awake()
         {
             _transform = transform;
-
-            _move.action.performed += x =>
-            {
-                _shootDirection = x.ReadValue<Vector2>();
-            };
-            _shoot.action.performed += _ =>
-            {
-                BulletPool.Instance.Spawn((float3)_transform.position + math.float3(_shootDirection * SAFE_DISTANCE, 0), _shootDirection);
-            };
         }
 
         private void OnEnable()
         {
+            //Enable input
             _move.action.Enable();
             _shoot.action.Enable();
-        }        
+            //Subscribe to Input events
+            _move.action.performed += OnMove;
+            _shoot.action.performed += OnShoot;
+        }
+
+        //Subscribe to Input events
         private void OnDisable()
         {
+            //Disable input
             _move.action.Disable();
             _shoot.action.Disable();
+            //Unsubscribe to Input events
+            _move.action.performed -= OnMove;
+            _shoot.action.performed -= OnShoot;
+        }
+
+        private void OnMove(InputAction.CallbackContext context) => _shootDirection = context.ReadValue<Vector2>();
+
+        private void OnShoot(InputAction.CallbackContext obj)
+        {
+            float3 spavnPosition = (float3)_transform.position + math.float3(_shootDirection * SAFE_DISTANCE, 0);
+            BulletPool.Instance.Spawn(spavnPosition, _shootDirection);
         }
     }
 }

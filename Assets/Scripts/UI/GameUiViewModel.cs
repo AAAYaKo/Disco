@@ -36,11 +36,13 @@ namespace Disco.Ui
 
         private readonly UiRepository _repository = UiRepository.Instance;
 
-
+        //Subscribe to Property changed event
         private void OnEnable()
         {
             _repository.PropertyChanged += OnPropertyChanged;
         }
+
+        //Unsubscribe to Property changed event
         private void OnDisable()
         {
             _repository.PropertyChanged -= OnPropertyChanged;

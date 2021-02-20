@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Disco
 {
     [RequireComponent(typeof(Collider2D))]
-    public class Bullet : BasePloolComponent
+    public class Bullet : BasePoolComponent
     {
         [SerializeField] private float _timeOfLife = 3;
         [SerializeField] private float _speed = 7;
@@ -24,19 +24,23 @@ namespace Disco
         {
             if (_timeOfLife <= 0)
             {
+                //Pool object
                 _timeOfLife = 3;
                 BulletPool.Instance.Despawn(gameObject);
             }
             else
+                //Tick time
                 _timeOfLife -= Time.deltaTime;
 
+            //Move bullet
             _transform.position +=_translation * (Time.deltaTime * _speed);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out IDamageble health))
-                health.TryAplyDamagage(_damage);
+            //try hit damagedle object
+            if (collision.TryGetComponent(out IDamageble damagedle))
+                damagedle.TryAplyDamagage(_damage);
             BulletPool.Instance.Despawn(gameObject);
         }
     }

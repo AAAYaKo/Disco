@@ -21,12 +21,13 @@ namespace Disco.Enemy
         {
             _radiuseOfVisionSq = _radiuseOfVision * _radiuseOfVision;
 
-            _player = FindObjectOfType<PlayerHealth>().GetComponent<Transform>();
-            _transform = GetComponent<Transform>();
+            _player = FindObjectOfType<PlayerHealth>().transform;
+            _transform = transform;
         }
 
         private void FixedUpdate()
         {
+            //Find Player
             float distanceSq = math.distancesq(_transform.position, _player.position);
             bool inRadiuse = distanceSq <= _radiuseOfVisionSq;
             if (inRadiuse && !_isSooting)
@@ -38,6 +39,7 @@ namespace Disco.Enemy
                 _isSooting = false;
         }
 
+        //Shoot to player
         private IEnumerator AIShoot()
         {
             while (_isSooting)

@@ -15,14 +15,16 @@ namespace Disco.Player
             get => _current;
             set
             {
+                //Verify value 
                 if (value > _max || value < 0)
                     throw new ArgumentOutOfRangeException("Current health can't be more then Max Health or lower than Zero");
                 else
                 {
-                    if (value == 0)
-                        Death?.Invoke();
                     _repository.PlayerHealth = value;
                     _current = value;
+                    //Die
+                    if (value == 0)
+                        Death?.Invoke();
                 }
             }
         }

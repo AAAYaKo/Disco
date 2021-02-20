@@ -5,6 +5,8 @@ namespace Disco.Enemy
 {
     public class EnemyHealth : MonoBehaviour, IDamageble
     {
+        public event Action OnDeath;
+
         [SerializeField] private int _max = 3;
         [SerializeField] private int _curret;
 
@@ -13,18 +15,18 @@ namespace Disco.Enemy
             get => _curret;
             set
             {
+                //Verify
                 if (value > _max || value < 0)
                     throw new ArgumentOutOfRangeException("Health can't be more than Max and less than Zero");
                 else
                 {
-                    if (value == 0)
-                        OnDeath.Invoke();
                     _curret = value;
+                    //Die
+                    if (value == 0)
+                        OnDeath?.Invoke();
                 }
             }
         }
-
-        public event Action OnDeath;
 
 
         private void Awake()
@@ -38,8 +40,7 @@ namespace Disco.Enemy
 
         public void TryAplyDamagage(int damage)
         {
-            if (damage <= 0) return;
-            if (Current == 0) return;
+            if (Current == 0 && damage <= 0) return;
             int next = Current - damage;
             if (next <= 0)
             {
