@@ -338,7 +338,7 @@ public class @Inputs : IInputActionCollection, IDisposable
                 {
                     ""name"": ""ESDF"",
                     ""id"": ""ec1df6fb-4855-40af-9b24-86a62107b64f"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
