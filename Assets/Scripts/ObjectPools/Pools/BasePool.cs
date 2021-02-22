@@ -9,7 +9,7 @@ namespace Disco.ObjectPooling
     /// Base Pool of IPoolComponents
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class BasePool<T> : MonoBehaviour where T : MonoBehaviour, IPoolCoomponent
+    public abstract class BasePool<T> : BasePool where T : MonoBehaviour, IPoolCoomponent
     {
         [SerializeField] private GameObject _prephab;
         [SerializeField] private int _defaultCount = 20;
@@ -20,24 +20,10 @@ namespace Disco.ObjectPooling
         private Transform _transform;
 
 
-        #region Singlethone
-        private static BasePool<T> _instance;
-
-        public static BasePool<T> Instance => _instance;
-
         protected virtual void Awake()
         {
-            if (_instance == null)
-                _instance = this;
-            else
-            {
-                Debug.LogWarning($"Singleton for {GetType().Name} already exists.");
-                Destroy(gameObject);
-            }
-
             _transform = transform;
         }
-        #endregion
 
         protected virtual void OnEnable()
         {
@@ -95,7 +81,7 @@ namespace Disco.ObjectPooling
         /// Disable and store pool Object
         /// </summary>
         /// <param name="pooledGameObject"></param>
-        public void Despawn(GameObject pooledGameObject)
+        public override void Despawn(GameObject pooledGameObject)
         {
             _pool.Enqueue(pooledGameObject);
             pooledGameObject.SetActive(false);
@@ -108,17 +94,18 @@ namespace Disco.ObjectPooling
         {
             for (int i = 0; i < _defaultCount; i++)
             {
-                AddBullet();
+                AddToPool();
             }
         }
 
         /// <summary>
         /// Add new Bullet to Pool
         /// </summary>
-        private void AddBullet()
+        private void AddToPool()
         {
             GameObject gameObject = Instantiate(_prephab, _transform);
             T component = gameObject.GetComponent<T>();
+            component.SetPool(this);
             _components.Add(gameObject, component);
             _pool.Enqueue(gameObject);
             gameObject.SetActive(false);
@@ -131,11 +118,16 @@ namespace Disco.ObjectPooling
         private GameObject GetGameObject()
         {
             if (_pool.Count == 0)
-                AddBullet();
+                AddToPool();
 
             GameObject gameObject = _pool.Dequeue();
             gameObject.SetActive(true);
             return gameObject;
         }
+    }
+
+    public abstract class BasePool : MonoBehaviour
+    {
+        public abstract void Despawn(GameObject pooledGameObject);
     }
 }

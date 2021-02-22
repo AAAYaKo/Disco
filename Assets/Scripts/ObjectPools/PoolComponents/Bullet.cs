@@ -25,8 +25,7 @@ namespace Disco
             if (_timeOfLife <= 0)
             {
                 //Pool object
-                _timeOfLife = 3;
-                BulletPool.Instance.Despawn(gameObject);
+                _pool.Despawn(gameObject);
             }
             else
                 //Tick time
@@ -41,7 +40,7 @@ namespace Disco
             //try hit damagedle object
             if (collision.TryGetComponent(out IDamageble damagedle))
                 damagedle.TryAplyDamagage(_damage);
-            BulletPool.Instance.Despawn(gameObject);
+            _pool.Despawn(gameObject);
         }
     }
 }

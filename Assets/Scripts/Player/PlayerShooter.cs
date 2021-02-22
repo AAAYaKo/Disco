@@ -12,12 +12,14 @@ namespace Disco.Player
         [SerializeField] private InputActionReference _move;
         [SerializeField] private InputActionReference _shoot;
         private Transform _transform;
+        private BulletPool _pool;
         private float2 _shootDirection = Vector2.right;
 
 
         private void Awake()
         {
             _transform = transform;
+            _pool = FindObjectOfType<BulletPool>();
         }
 
         private void OnEnable()
@@ -46,7 +48,7 @@ namespace Disco.Player
         private void OnShoot(InputAction.CallbackContext obj)
         {
             float3 spavnPosition = (float3)_transform.position + math.float3(_shootDirection * SAFE_DISTANCE, 0);
-            BulletPool.Instance.Spawn(spavnPosition, _shootDirection);
+            _pool.Spawn(spavnPosition, _shootDirection);
         }
     }
 }

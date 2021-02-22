@@ -828,6 +828,18 @@ PrefabInstance:
       propertyPath: ViewModelName
       value: Disco.Ui.GameUiViewModel
       objectReference: {fileID: 0}
+    - target: {fileID: 727240314328895118, guid: 13ec276a24c51e34c9bedc3339936455, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 727240314328895118, guid: 13ec276a24c51e34c9bedc3339936455, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 727240314328895118, guid: 13ec276a24c51e34c9bedc3339936455, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 215
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13ec276a24c51e34c9bedc3339936455, type: 3}
 --- !u!1 &1709641128

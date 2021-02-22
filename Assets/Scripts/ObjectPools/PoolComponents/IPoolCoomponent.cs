@@ -4,6 +4,8 @@ namespace Disco.ObjectPooling
 {
     public interface IPoolCoomponent
     {
+        public void SetPool(BasePool pool);
+
         /// <summary>
         /// Translocate by postition and direction
         /// </summary>

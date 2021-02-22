@@ -20,7 +20,7 @@ namespace Disco.Player
                     throw new ArgumentOutOfRangeException("Current health can't be more then Max Health or lower than Zero");
                 else
                 {
-                    _repository.PlayerHealth = value;
+                    _viewModel.Count = value;
                     _current = value;
                     //Die
                     if (value == 0)
@@ -28,14 +28,20 @@ namespace Disco.Player
                 }
             }
         }
-        private readonly UiRepository _repository = UiRepository.Instance;
+
+        private GameUiViewModel _viewModel;
 
 
         private void OnEnable()
         {
-            Current = _max;
-            _repository.IsDead = false;
             Death += OnDie;
+        }
+
+        private void Start()
+        {
+            _viewModel = FindObjectOfType<GameUiViewModel>();
+            Current = _max;
+            _viewModel.IsDead = false;
         }
 
         private void OnDisable()
@@ -45,7 +51,7 @@ namespace Disco.Player
 
         private void OnDie()
         {
-            _repository.IsDead = true;
+            _viewModel.IsDead = true;
             Time.timeScale = 0;
         }
 

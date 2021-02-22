@@ -13,6 +13,7 @@ namespace Disco.Enemy
         [SerializeField] private float _shootDuration = 0.2f;
 
         private Transform _transform;
+        private BulletPool _pool;
         private float _radiuseOfVisionSq;
         private bool _isSooting;
 
@@ -23,6 +24,7 @@ namespace Disco.Enemy
 
             _player = FindObjectOfType<PlayerHealth>().transform;
             _transform = transform;
+            _pool = FindObjectOfType<BulletPool>();
         }
 
         private void FixedUpdate()
@@ -46,7 +48,7 @@ namespace Disco.Enemy
             {
                 float3 direction3 = _player.position - _transform.position;
                 float2 direction2 = math.normalize(new float2(direction3.x, direction3.y));
-                BulletPool.Instance.Spawn((float3)_transform.position + math.normalize(direction3) * 1.5f, direction2);
+                _pool.Spawn((float3)_transform.position + math.normalize(direction3) * 1.5f, direction2);
                 yield return new WaitForSeconds(_shootDuration);
             }
         }

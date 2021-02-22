@@ -33,36 +33,5 @@ namespace Disco.Ui
                 }
             }
         }
-
-        private readonly UiRepository _repository = UiRepository.Instance;
-
-        //Subscribe to Property changed event
-        private void OnEnable()
-        {
-            _repository.PropertyChanged += OnPropertyChanged;
-        }
-
-        //Unsubscribe to Property changed event
-        private void OnDisable()
-        {
-            _repository.PropertyChanged -= OnPropertyChanged;
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(_repository.PlayerHealth):
-                    Count = _repository.PlayerHealth;
-                    break;
-
-                case nameof(_repository.IsDead):
-                    IsDead = _repository.IsDead;
-                    break;
-
-                default:
-                    break;
-            }
-        }
     }
 }

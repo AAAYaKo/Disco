@@ -7,8 +7,13 @@ namespace Disco.ObjectPooling
     public abstract class BasePoolComponent : MonoBehaviour, IPoolCoomponent
     {
         [SerializeField] protected Transform _transform;
+        protected BasePool _pool;
 
-        #region Translocate
+        public void SetPool(BasePool pool)
+        {
+            _pool = pool;
+        }
+
         public virtual void Translocate(float3 position, float2 direction)
         {
             //Verify
@@ -26,7 +31,6 @@ namespace Disco.ObjectPooling
             _transform.position = position;
             _transform.rotation = rotation;
         }
-        #endregion
 
 #if UNITY_EDITOR
         private void OnValidate()

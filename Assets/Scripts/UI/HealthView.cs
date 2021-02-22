@@ -12,7 +12,7 @@ namespace Disco.Ui
         {
             set
             {
-                _lable.text = $"Lives: {value}";
+                _lable.text = "Lives: " + value;
             }
         }
     }
