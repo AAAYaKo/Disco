@@ -12,7 +12,7 @@ namespace Disco.Player
         [SerializeField] private InputActionReference _move;
         [SerializeField] private InputActionReference _shoot;
         private Transform _transform;
-        private float2 _shootDirection;
+        private float2 _shootDirection = Vector2.right;
 
 
         private void Awake()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Disco.ObjectPooling
 {
-    [ExecuteInEditMode]
     public abstract class BasePoolComponent : MonoBehaviour, IPoolCoomponent
     {
         [SerializeField] protected Transform _transform;
@@ -30,7 +29,7 @@ namespace Disco.ObjectPooling
         #endregion
 
 #if UNITY_EDITOR
-        protected virtual void Awake()
+        private void OnValidate()
         {
             _transform = GetComponent<Transform>();
         }

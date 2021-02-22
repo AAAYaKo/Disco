@@ -27,7 +27,6 @@ namespace Disco.ObjectPooling
 
         protected virtual void Awake()
         {
-
             if (_instance == null)
                 _instance = this;
             else
@@ -36,7 +35,7 @@ namespace Disco.ObjectPooling
                 Destroy(gameObject);
             }
 
-            _transform = GetComponent<Transform>();
+            _transform = transform;
         }
         #endregion
 
